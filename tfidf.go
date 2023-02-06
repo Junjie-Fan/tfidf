@@ -18,6 +18,7 @@ type TFIDF struct {
 	n         int                    // number of documents in train data
 	stopWords map[string]interface{} // words to be filtered
 	tokenizer seg.Tokenizer          // tokenizer, space is used as default
+	allterms  map[int]int
 }
 
 // New new model with default
@@ -28,6 +29,7 @@ func New() *TFIDF {
 		termDocs:  make(map[string]int),
 		n:         0,
 		tokenizer: &seg.EnTokenizer{},
+		allterms:  make(map[int]int),
 	}
 }
 
@@ -134,10 +136,15 @@ func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 	if len(tokens) == 0 {
 		return
 	}
-
+	all := f.allterms
 	for _, term := range tokens {
 		if _, ok := f.stopWords[term]; ok {
 			continue
+		}
+		if _, have := all[term]; have {
+			all[term]++
+		} else {
+			all[term] = 1
 		}
 
 		m[term]++
