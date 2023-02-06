@@ -141,8 +141,8 @@ func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 		if _, ok := f.stopWords[term]; ok {
 			continue
 		}
-		if _, have := all[term]; have {
-			all[term]++
+		if _, have := all[int(term)]; have {
+			all[int(term)]++
 		} else {
 			all[term] = 1
 		}
