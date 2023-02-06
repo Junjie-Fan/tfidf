@@ -5,9 +5,10 @@ import (
 	"encoding/hex"
 	"log"
 	"math"
+	"strconv"
 
-	"github.com/wilcosheh/tfidf/seg"
-	"github.com/wilcosheh/tfidf/util"
+	"github.com/Junjie-Fan/tfidf/seg"
+	"github.com/Junjie-Fan/tfidf/util"
 )
 
 // TFIDF tfidf model
@@ -141,8 +142,9 @@ func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 		if _, ok := f.stopWords[term]; ok {
 			continue
 		}
-		if _, have := all[int(term)]; have {
-			all[int(term)]++
+		index := strconv.Atoi(term)
+		if _, have := all[index]; have {
+			all[index]++
 		} else {
 			all[term] = 1
 		}
