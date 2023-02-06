@@ -130,6 +130,12 @@ func (f *TFIDF) Cal(doc string) (weight map[string]float64) {
 	return weight
 }
 
+func (f *TFIDF) InitTerms(i int) {
+	all := f.allterms
+	all[i] = 0
+	return
+}
+
 func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 	m = make(map[string]int)
 
