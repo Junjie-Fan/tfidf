@@ -142,11 +142,11 @@ func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 		if _, ok := f.stopWords[term]; ok {
 			continue
 		}
-		index := strconv.Atoi(term)
+		index, _ := strconv.Atoi(term)
 		if _, have := all[index]; have {
 			all[index]++
 		} else {
-			all[term] = 1
+			all[index] = 1
 		}
 
 		m[term]++
