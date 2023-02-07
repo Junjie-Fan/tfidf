@@ -16,7 +16,7 @@ type TFIDF struct {
 	docIndex  map[string]int         // train document index in TermFreqs
 	termFreqs []map[string]int       // term frequency for each train document
 	termDocs  map[string]int         // documents number for each term in train data
-	n         int                    // number of documents in train data
+	N         int                    // number of documents in train data
 	stopWords map[string]interface{} // words to be filtered
 	tokenizer seg.Tokenizer          // tokenizer, space is used as default
 	Allterms  map[int]int
@@ -28,7 +28,7 @@ func New() *TFIDF {
 		docIndex:  make(map[string]int),
 		termFreqs: make([]map[string]int, 0),
 		termDocs:  make(map[string]int),
-		n:         0,
+		N:         0,
 		tokenizer: &seg.EnTokenizer{},
 		Allterms:  make(map[int]int),
 	}
@@ -40,7 +40,7 @@ func NewTokenizer(tokenizer seg.Tokenizer) *TFIDF {
 		docIndex:  make(map[string]int),
 		termFreqs: make([]map[string]int, 0),
 		termDocs:  make(map[string]int),
-		n:         0,
+		N:         0,
 		tokenizer: tokenizer,
 	}
 }
@@ -95,8 +95,8 @@ func (f *TFIDF) AddDocs(docs ...string) {
 			return
 		}
 
-		f.docIndex[h] = f.n
-		f.n++
+		f.docIndex[h] = f.N
+		f.N++
 
 		f.termFreqs = append(f.termFreqs, termFreq)
 
@@ -124,7 +124,7 @@ func (f *TFIDF) Cal(doc string) (weight map[string]float64) {
 		docTerms += freq
 	}
 	for term, freq := range termFreq {
-		weight[term] = tfidf(freq, docTerms, f.termDocs[term], f.n)
+		weight[term] = tfidf(freq, docTerms, f.termDocs[term], f.N)
 	}
 
 	return weight
@@ -139,8 +139,8 @@ func (f *TFIDF) InitTerms(i int) {
 func (f *TFIDF) Merge(m *TFIDF) {
 	for i, _ := range m.docIndex {
 		if _, ok := f.docIndex[i]; !ok {
-			f.docIndex[i] = f.n
-			f.n++
+			f.docIndex[i] = f.N
+			f.N++
 			termfreq := m.termFreqs[m.docIndex[i]]
 			f.termFreqs = append(f.termFreqs, termfreq)
 			for term := range termfreq {
@@ -198,7 +198,7 @@ func hash(text string) string {
 	h := md5.New()
 	h.Write([]byte(text))
 	return hex.EncodeToString(h.Sum(nil))
-}
+}q
 
 func tfidf(termFreq, docTerms, termDocs, N int) float64 {
 	tf := float64(termFreq) / float64(docTerms)
