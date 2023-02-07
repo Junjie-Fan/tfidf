@@ -198,7 +198,7 @@ func hash(text string) string {
 	h := md5.New()
 	h.Write([]byte(text))
 	return hex.EncodeToString(h.Sum(nil))
-}q
+}
 
 func tfidf(termFreq, docTerms, termDocs, N int) float64 {
 	tf := float64(termFreq) / float64(docTerms)
