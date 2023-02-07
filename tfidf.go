@@ -148,6 +148,13 @@ func (f *TFIDF) Merge(m *TFIDF) {
 			}
 		}
 	}
+	for i, v := range f.Allterms {
+		if _, ok := f.Allterms[i]; ok {
+			f.Allterms[i] += v
+		} else {
+			f.Allterms[i] = v
+		}
+	}
 }
 
 func (f *TFIDF) termFreq(doc string) (m map[string]int) {
