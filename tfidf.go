@@ -148,7 +148,7 @@ func (f *TFIDF) Merge(m *TFIDF) {
 			}
 		}
 	}
-	for i, v := range f.Allterms {
+	for i, v := range m.Allterms {
 		if _, ok := f.Allterms[i]; ok {
 			f.Allterms[i] += v
 		} else {
