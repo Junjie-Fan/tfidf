@@ -136,6 +136,20 @@ func (f *TFIDF) InitTerms(i int) {
 	return
 }
 
+func (f *TFIDF) Merge(m *TFIDF) {
+	for i, _ := range m.docIndex {
+		if _, ok := f.docIndex[i]; !ok {
+			f.docIndex[i] = f.n
+			f.n++
+			termfreq := m.termFreqs[m.docIndex[i]]
+			f.termFreqs = append(f.termFreqs, termfreq)
+			for term := range termfreq {
+				f.termDocs[term]++
+			}
+		}
+	}
+}
+
 func (f *TFIDF) termFreq(doc string) (m map[string]int) {
 	m = make(map[string]int)
 
